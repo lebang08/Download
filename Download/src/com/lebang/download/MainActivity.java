@@ -39,6 +39,15 @@ public class MainActivity extends Activity {
 		super.onDestroy();
 		unregisterReceiver(mRecevier);
 	}
+	
+	BroadcastReceiver mRecevier = new BroadcastReceiver() {
+		public void onReceive(android.content.Context context, Intent intent) {
+			if (DownloadService.ACTION_UPDATE.equals(intent.getAction())) {
+				int finished = intent.getIntExtra("finished", 0);
+				progress.setProgress(finished);
+			}
+		};
+	};
 
 	private void initView() {
 		txt = (TextView) findViewById(R.id.text_filename);
@@ -71,13 +80,4 @@ public class MainActivity extends Activity {
 			}
 		});
 	}
-
-	BroadcastReceiver mRecevier = new BroadcastReceiver() {
-		public void onReceive(android.content.Context context, Intent intent) {
-			if (DownloadService.ACTION_UPDATE.equals(intent.getAction())) {
-				int finished = intent.getIntExtra("finished", 0);
-				progress.setProgress(finished);
-			}
-		};
-	};
 }
